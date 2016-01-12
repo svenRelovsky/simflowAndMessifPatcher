@@ -1,0 +1,121 @@
++-----------------------------------+
+| README - SimFlow and MESSIF patch |
++-----------------------------------+
+
+Author            Sven Relovsky
+Version           0.1
+Release date      2016-01-03 (yyyy-mm-dd)
+
+This package is an update of MESSIF library, adding DBSCAN clustering 
+algorithm. Package is then able to update SimFlow into version 0.2, which
+is using DBSCAN from updated MESSIF.
+
+Package overview:
+	
+Content:
+========
+1. License
+2. Requirements
+        2.1 Requirements(Updated MESSIF)
+        2.2 Requirements(Updated SimFlow)
+3. Installation
+4. Using
+        4.1 Using DBSCAN in updated MESSIF
+	4.2 Using updated SimFlow (0.2)
+
+1. License:
+===========
+* The MESSIF library is free software: you can redistribute it and/or modify it under the
+  terms of the ​GNU General Public License as published by the Free Software Foundation, 
+  either version 3 of the License, or (at your option) any later version.
+  http://www.gnu.org/licenses/gpl.txt
+* Suite of scripts SimFlow (0.2) is under BSD 3-Clause License:
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
+  3. Neither the name of Masaryk University nor the names of its
+     contributors may be used to endorse or promote products derived 
+     from this software without specific prior written permission.
+
+  This software is provided "as is", and any express or implied
+  warranties, including, but not limited to, the implied warranties of
+  merchantability and fitness for a particular purpose are disclaimed.
+  In no event shall Masaryk University or contributors be liable for
+  any direct, indirect, incidental, special, exemplary, or consequential
+  damages (including, but not limited to, procurement of substitute
+  goods or services; loss of use, data, or profits; or business
+  interruption) however caused and on any theory of liability, whether
+  in contract, strict liability, or tort (including negligence or
+  otherwise) arising in any way out of the use of this software, even
+  if advised of the possibility of such damage.
+
+
+2. Requirements
+===============
+
+2.1 Requirements(Updated MESSIF):
+--------------------------------  
+ * JDK 1.8 or higher
+
+2.2 Requirements(Updated SimFlow):
+---------------------------------
+ * Perl 5 or higher with Date::Manip, Time::HiRes and Data::Dumper  
+ * nfdump 1.6.3 or higher
+ * R 2.15 or higher
+ * lattice_0.20-13 or higher
+ * MESSIF library with DBSCAN
+
+
+3. Installation:
+================
+ 1. If not provided: 
+      * download MESSIF library (revision 1062, or later with same interface) from:
+            ** http://mufin.fi.muni.cz/trac/messif/browser/?rev=1062&format=zip
+	    ** or use the following (in directory of this README):
+                    $ wget -O ./messifPatch/repository-1062.zip "http://mufin.fi.muni.cz/trac/messif/browser/?rev=1062&format=zip"
+      * download SimFlow from:
+            ** http://www.ics.muni.cz/~vykopal/simflow
+            ** or use the following (in directory of this README):
+                    $ wget -O ./simflowPatch/simflow-0.1.tar.gz http://dior.ics.muni.cz/~vykopal/simflow/simflow-0.1.tar.gz
+                    $ tar -C simflowPatch/ -zxvf simflowPatch/simflow-0.1.tar.gz 
+ 2. Run messifPatcher.sh while you are inside messifPatch directory to update messif with DBSCAN 
+    algorithm and build java application for SimFlow, MESSIF library archive should be in the same folder 
+    as the messifPatcher script. Name of the zip file should be "repository-1062.zip", otherwise
+    it is neccessary to change the name inside the messifPatcher script.
+ 3. Run simflowPatcher.sh while you are inside simflowPatch directory to update SimFlow, folder containing 
+    SimFlow should be in the same directory as simflowPatcher, with name simflow-0.1.
+
+
+4. Usage:
+=========
+
+4.1 Using DBSCAN in updated MESSIF:
+-----------------------------------
+
+ $ java -jar DBSCAN.jar <PATH_TO_INPUTFILE> <EPSILON> <MINPTS> <PATH_TO_OUTPUT>
+ *NOTE: cluster/ will be added into <PATH_TO_OUTPUT>, if it exists it is better to erase content,
+  in order to prevent errorneous output.
+
+4.2 Using updated SimFlow (0.2):
+--------------------------------
+ 
+ $ ./simFlow.sh <path_to_scripts> <path_to_DBSCAN> <input_nfcapd_file> <filter> 
+   <time_window> <scale_factor> <epsilon> <minPts> <plot_file.pdf> <ratio>
+ * <path_to_DBSCAN> is path to DBSCAN.jar file (example: /path/to/db/DBSCAN.jar), other
+   arguments are the same as in previous version.
+   More information in simflow-0.1 README file.
+  
+ * To if everything was updated correctly you should be able to run following test:
+
+  $ ./simflow-0.1/simFlow.sh ./simflow-0.1 ../messifPatch/DBSCAN.jar  "test.nfcapd" "not src net 83.187.0.0/16 or not dst net 83.187.0.0/16" "2015/10/07.03:15:00-2015/10/07.03:20:00" 30 10 10 out.pdf 5
+
+
+For more information about:
+  * SimFlow go to http://www.ics.muni.cz/~vykopal/simflow.
+  * MESSIF go to http://mufin.fi.muni.cz/trac/messif/ 
